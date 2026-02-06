@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssuranceController;
+use App\Http\Controllers\TypeController;
 use App\Models\Assurance;
 use Illuminate\Support\Facades\Route;
 
@@ -43,4 +44,13 @@ Route::get('/gl', function () {
 
 });
 
-Route::get('/assurance',[AssuranceController::class,'index']);
+Route::get('/assurance',[AssuranceController::class,'index'])->name('assurance');
+Route::get('/addAssurance',[AssuranceController::class,'create'])->name('addAssurance');
+Route::post('/storeAssurance',[AssuranceController::class,'store'])->name('storeAssurance');
+Route::delete('deleteAssurance/{id}',[AssuranceController::class,'destroy'])->name('deleteAssurance');
+
+
+Route::get('/typeAssurance',[TypeController::class,'index'])->name('typeAssurance');
+
+
+Route::resource('/categorie', \App\Http\Controllers\CategorieController::class);
