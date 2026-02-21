@@ -14,7 +14,6 @@
                 <td>{{$a->id}}</td>
                 <td>{{$a->libelle}}</td>
                 <td>{{$a->montant}}</td>
-                <td>{{$a->category->libelle}}</td>
                 <td>
                     <form action="{{route('deleteAssurance',[$a->id])}}" method="post">
                         @csrf
@@ -22,7 +21,7 @@
                         <button class="btn btn-danger" type="submit">Delete</button>
                     </form>
 
-                    <button class="btn btn-primary">Update</button>
+                    <a  href="{{route('editAssurance',[$a->id])}}"  class="btn btn-primary">Update</a>
                 </td>
             </tr>
         @endforeach

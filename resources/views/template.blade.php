@@ -23,9 +23,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('typeAssurance')}}">Liste des types assurances</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('categorie.index')}}">Liste des categories</a>
-                </li>
+
 
 
             </ul>

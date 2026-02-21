@@ -9,7 +9,4 @@ class Assurance extends Model
 {
     use HasFactory;
 
-    public function category(){
-        return $this->belongsTo(Categorie::class);
-    }
 }

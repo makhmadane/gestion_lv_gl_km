@@ -27,9 +27,8 @@ class AssuranceController extends Controller
      */
     public function create()
     {
-        $categories = Categorie::all();
-
-        return view('assurance.add',compact('categories'));
+        $assurance = new Assurance();
+        return view('assurance.add',['assurance'=>$assurance]);
     }
 
     /**
@@ -43,7 +42,6 @@ class AssuranceController extends Controller
         $assurance = new Assurance();
         $assurance->libelle = $request['libelle'];
         $assurance->montant = $request['montant'];
-        $assurance->category_id = $request['categorie_id'];
         $assurance->save();
         return to_route('assurance');
 
@@ -57,7 +55,7 @@ class AssuranceController extends Controller
      */
     public function show($id)
     {
-        //
+      return  Assurance::find($id);
     }
 
     /**
@@ -68,7 +66,9 @@ class AssuranceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $assurance = show($id);
+        return view('assurance.add',['assurance'=>$assurance]);
+
     }
 
     /**
@@ -78,9 +78,13 @@ class AssuranceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $assurance = show($request['id']);
+        $assurance->libelle = $request['libelle'];
+        $assurance->montant = $request['montant'];
+        $assurance->save();
+        return to_route('assurance');
     }
 
     /**
@@ -93,5 +97,6 @@ class AssuranceController extends Controller
     {
         $assurance = Assurance::find($id);
         $assurance->delete();
+        return to_route('assurance');
     }
 }
