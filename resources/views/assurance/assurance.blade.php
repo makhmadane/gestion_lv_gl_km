@@ -14,6 +14,7 @@
                 <td>{{$a->id}}</td>
                 <td>{{$a->libelle}}</td>
                 <td>{{$a->montant}}</td>
+                <td>{{$a->type->libelle}}</td>
                 <td>
                     <form action="{{route('deleteAssurance',[$a->id])}}" method="post">
                         @csrf

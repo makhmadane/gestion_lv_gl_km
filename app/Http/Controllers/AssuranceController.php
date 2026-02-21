@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Assurance;
 use App\Models\Categorie;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 class AssuranceController extends Controller
@@ -28,7 +29,8 @@ class AssuranceController extends Controller
     public function create()
     {
         $assurance = new Assurance();
-        return view('assurance.add',['assurance'=>$assurance]);
+        $types = Type::all();
+        return view('assurance.add',['assurance'=>$assurance, 'types'=>$types]);
     }
 
     /**
@@ -39,9 +41,15 @@ class AssuranceController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'libelle'=>'required|max:10',
+            'montant'=>'required',
+            'type_id'=>'required',
+        ]);
         $assurance = new Assurance();
         $assurance->libelle = $request['libelle'];
         $assurance->montant = $request['montant'];
+        $assurance->type_id = $request['type_id'];
         $assurance->save();
         return to_route('assurance');
 
@@ -66,8 +74,9 @@ class AssuranceController extends Controller
      */
     public function edit($id)
     {
-        $assurance = show($id);
-        return view('assurance.add',['assurance'=>$assurance]);
+        $types = Type::all();
+        $assurance = $this->show($id);
+        return view('assurance.add',['assurance'=>$assurance, 'types'=>$types]);
 
     }
 
@@ -80,9 +89,10 @@ class AssuranceController extends Controller
      */
     public function update(Request $request)
     {
-        $assurance = show($request['id']);
+        $assurance =  $this->show($request['id']);
         $assurance->libelle = $request['libelle'];
         $assurance->montant = $request['montant'];
+        $assurance->type_id = $request['type_id'];
         $assurance->save();
         return to_route('assurance');
     }

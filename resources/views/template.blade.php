@@ -21,7 +21,7 @@
                     <a class="nav-link active" aria-current="page" href="{{route('assurance')}}">Liste des assurances</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('typeAssurance')}}">Liste des types assurances</a>
+                    <a class="nav-link" href="{{route('typeAssurance.index')}}">Liste des types assurances</a>
                 </li>
 
 
