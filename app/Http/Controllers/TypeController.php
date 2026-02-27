@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assurance;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,8 @@ class TypeController extends Controller
      */
     public function create()
     {
-        //
+        $type = new Type();
+        return view('typeAssurance.add',['type'=>$type]);
     }
 
     /**
@@ -36,7 +38,21 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'libelle'=> 'required|unique:types',
+            'photo' => 'mimes:jpeg,jpg,png|max:2048'
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $imagePath = $request->file('photo')->store('images', 'public');
+        }
+
+
+        $type = new Type();
+        $type->libelle = $request->input('libelle');
+        $type->photo = $imagePath;
+        $type->save();
+        return to_route('typeAssurance.index')->with('success','Type ajoute avec succes');
     }
 
     /**
@@ -47,7 +63,7 @@ class TypeController extends Controller
      */
     public function show($id)
     {
-        //
+        return Type::find($id);
     }
 
     /**
@@ -81,6 +97,8 @@ class TypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $assurance = $this->show($id);
+        $assurance->delete();
+        return to_route('typeAssurance.index')->with('delete','Type supprime avec succes');
     }
 }

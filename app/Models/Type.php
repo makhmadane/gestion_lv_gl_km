@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Type extends Model
 {
     use HasFactory;
+
+    function assurances(){
+        return $this->hasMany(Assurance::class);
+    }
 }

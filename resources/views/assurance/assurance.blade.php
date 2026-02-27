@@ -1,6 +1,7 @@
 @extends('template')
 
 @section('content')
+
 <a class="btn btn-success" href="{{route('addAssurance')}}">Add</a>
     <table class="table table-stripped">
         <tr>

@@ -41,17 +41,19 @@ class AssuranceController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'libelle'=>'required|max:10',
             'montant'=>'required',
             'type_id'=>'required',
         ]);
+
         $assurance = new Assurance();
         $assurance->libelle = $request['libelle'];
         $assurance->montant = $request['montant'];
         $assurance->type_id = $request['type_id'];
         $assurance->save();
-        return to_route('assurance');
+        return to_route('assurance')->with('success','Assurance créée avec succes');
 
     }
 
@@ -89,6 +91,13 @@ class AssuranceController extends Controller
      */
     public function update(Request $request)
     {
+
+        $request->validate([
+            'libelle'=>'required|max:10',
+            'montant'=>'required',
+            'type_id'=>'required',
+        ]);
+
         $assurance =  $this->show($request['id']);
         $assurance->libelle = $request['libelle'];
         $assurance->montant = $request['montant'];
@@ -107,6 +116,6 @@ class AssuranceController extends Controller
     {
         $assurance = Assurance::find($id);
         $assurance->delete();
-        return to_route('assurance');
+        return to_route('assurance')->with('delete','Assurance delete avec succes');;
     }
 }
