@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return to_route('assurance');
+});
 Route::get('/gl', function () {
     //return view('welcome');
 

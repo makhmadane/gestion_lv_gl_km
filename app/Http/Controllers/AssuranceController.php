@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AssuranceRequest;
+use App\Http\services\AssuranceService;
 use App\Models\Assurance;
 use App\Models\Categorie;
 use App\Models\Type;
@@ -9,6 +11,12 @@ use Illuminate\Http\Request;
 
 class AssuranceController extends Controller
 {
+
+    protected $service;
+
+    public function __construct(AssuranceService $service){
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +24,8 @@ class AssuranceController extends Controller
      */
     public function index()
     {
-            $assurances = Assurance::paginate(5); //model
+            $assurances = $this->service->getAllAssurances();
+
             return view('assurance.assurance',['assurances'=>$assurances]);
 
     }
@@ -39,20 +48,10 @@ class AssuranceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AssuranceRequest $request)
     {
+        $this->service->store($request->validated());
 
-        $request->validate([
-            'libelle'=>'required|max:10',
-            'montant'=>'required',
-            'type_id'=>'required',
-        ]);
-
-        $assurance = new Assurance();
-        $assurance->libelle = $request['libelle'];
-        $assurance->montant = $request['montant'];
-        $assurance->type_id = $request['type_id'];
-        $assurance->save();
         return to_route('assurance')->with('success','Assurance créée avec succes');
 
     }
@@ -65,7 +64,7 @@ class AssuranceController extends Controller
      */
     public function show($id)
     {
-      return  Assurance::find($id);
+        return $this->service->getAssuranceById($id);
     }
 
     /**
@@ -77,7 +76,7 @@ class AssuranceController extends Controller
     public function edit($id)
     {
         $types = Type::all();
-        $assurance = $this->show($id);
+        $assurance = $this->service->getAssuranceById($id);
         return view('assurance.add',['assurance'=>$assurance, 'types'=>$types]);
 
     }
@@ -89,20 +88,12 @@ class AssuranceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(AssuranceRequest $request)
     {
 
-        $request->validate([
-            'libelle'=>'required|max:10',
-            'montant'=>'required',
-            'type_id'=>'required',
-        ]);
+        $assurance =  $this->service->getAssuranceById($request->id);
+        $this->service->update($assurance,$request->validated());
 
-        $assurance =  $this->show($request['id']);
-        $assurance->libelle = $request['libelle'];
-        $assurance->montant = $request['montant'];
-        $assurance->type_id = $request['type_id'];
-        $assurance->save();
         return to_route('assurance');
     }
 
@@ -115,7 +106,8 @@ class AssuranceController extends Controller
     public function destroy($id)
     {
         $assurance = Assurance::find($id);
-        $assurance->delete();
+        $this->service->delete($assurance);
+
         return to_route('assurance')->with('delete','Assurance delete avec succes');;
     }
 }
